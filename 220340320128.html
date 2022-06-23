@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WPT 220340320128 </title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>	
+
+<script>
+
+$(()=>{
+                    
+
+                    $("#b1").click(
+                    ()=>{
+
+                        let input={x:$("#bookid").val(),
+  y:$("#bookname").val(),z:$("#bookprice").val()};
+
+                      
+                        let ajaxparams=
+                        { data:ip, 
+                          url: "http://localhost:103/bookinfo",
+                          type:'get',
+                          dataType: "json",
+                          success:(output)=>{ 
+                              console.log( "data given by server in success" + datagivenbyserver.status)
+                              if(output.status  === true )
+                              {
+                                       $("#message").text("BOOK ADDED SUCCESSFULLY"); //makeup
+                              } 
+                              else
+                              {
+                                    $("#message").text("FAILED Book addition operation ");
+                              }
+                                                          
+                            
+                            },
+                          error:(errorgivenbyserver)=> { console.log("failed to contact server "+errorgivenbyserver)}
+                        }  ;
+                        
+                        //time to call the function
+                        console.log("is the function working");
+                        $.ajax(ajaxparams);
+
+
+                        
+                    }
+
+      );//end of registration for click event
+
+$("#bookid").blur(()=>{
+
+
+let y=$("#bookid").val();
+
+$("#bookid").disabled=true;
+
+let ajaxparams={
+  data:{ x:y},
+  url: "http://localhost:900/getItem",
+  type:'get',
+  dataType: "json",
+  success:(output)=>{ 
+
+    if(output.status)
+{
+
+
+$("#message").text("item details found");
+
+$("#bookname").val(output.bookdetails.bookname);
+
+document.querySelector("#bookname").value=
+output.bookdetails.bookname;
+
+
+$("#bookprice").val(output.bookdetails.price);
+
+}
+
+else
+{
+
+$("#message").text("book details not found");
+$("#bookname").val("");
+$("#bookprice").val("");
+
+}
+
+
+  },
+  error:(error)=>{ console.log("failure " + error)}
+
+};//end of the object creation for ajaxparams
+$.ajax(ajaxparams);
+
+
+});
+
+            });
+
+</script>
+
+</head>
+<body>
+    <Br/>
+    Book ID   <input type="text" id=""bookid" placeholder="Book ID"/><span id="msg"> Message </span>
+  <Br/>
+   Book Name <input type="text" id=""bookname" placeholder="Book Name"/>
+  <br/>
+    Book Price <input type="text" id=""bookprice" placeholder="price"/>
+  <br/>
+    <button type="submit" id="b1" >add a book</button>
+    <Br/>
+    <h3> Show all books here </h3>
+    <p>  </p>
+</body>
+</html>
